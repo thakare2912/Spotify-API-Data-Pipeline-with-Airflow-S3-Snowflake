@@ -51,3 +51,39 @@ All tasks are orchestrated with Apache Airflow running inside Docker **on your l
 
 ---
 
+
+## 🚀 **How to Run**
+
+1️⃣ **Set up AWS S3 & Snowflake:**  
+- Create an S3 bucket (`spotify-etl-project-hanumant`) with `raw_data` and `transformed_data` folders.  
+- Configure Snowpipe to watch your S3 bucket.
+
+2️⃣ **Deploy Airflow with Docker:**  
+- Use `docker-compose.yml` to spin up Airflow **locally** with Docker.
+
+3️⃣ **Set Secrets:**  
+- Store Spotify API credentials in Airflow Variables (`spotify_client_id` & `spotify_client_secret`).  
+- Configure AWS connection (`aws_s3_airbnb`).
+
+4️⃣ **Run the DAG:**  
+- Trigger the `spotify_data_pipeline` DAG from the Airflow UI.
+
+5️⃣ **Check Outputs:**  
+- Raw JSON files in `raw_data/to_processed/`  
+- Clean CSVs in `transformed_data/`  
+- Loaded data in Snowflake tables.
+
+---
+
+## 🔑 **Key Learnings**
+
+✅ Building ETL pipelines with **API extraction**  
+✅ Orchestrating workflows with **Apache Airflow**  
+✅ Managing data storage on **AWS S3**  
+✅ Automating loading into **Snowflake** using **Snowpipe**  
+✅ Running Airflow on **Docker**
+
+---
+
+
+
