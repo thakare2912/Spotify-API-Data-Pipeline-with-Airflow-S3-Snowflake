@@ -1,7 +1,7 @@
 # 🎵 Spotify End-to-End Data Pipeline using Apache Airflow, AWS & Snowflake
 
 ![Spotify End-To-End Data Pipeline Project using airfleo](https://github.com/user-attachments/assets/a506bd49-14d4-43bd-a4be-34d80c41ca46)
-)
+
 
 ## 📌 Project Overview
 
