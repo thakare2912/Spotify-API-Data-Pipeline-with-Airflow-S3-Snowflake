@@ -1,89 +1,55 @@
-# 🎵 Spotify End-to-End Data Pipeline using Apache Airflow, AWS & Snowflake
+# Spotify ETL Data Pipeline
 
-![Spotify End-To-End Data Pipeline Project using airfleo](https://github.com/user-attachments/assets/a506bd49-14d4-43bd-a4be-34d80c41ca46)
-
-
-## 📌 Project Overview
-
-This project demonstrates an **end-to-end ETL data pipeline** that extracts data from the **Spotify API**, stores raw and processed data in **Amazon S3**, and loads transformed data into **Snowflake** using **Snowpipe**, all orchestrated with **Apache Airflow** running in **Docker**.
+This project is an **Apache Airflow pipeline** that extracts playlist track data from the **Spotify API**, stores raw JSON data in **Amazon S3**, processes it into normalized CSVs for **albums**, **artists**, and **songs**, uploads the processed CSVs back to S3, and finally moves the raw data to an archive folder. You can also load the transformed data to **Snowflake** automatically using **Snowpipe**.
 
 ---
 
-## ⚙️ **Architecture**
+##  Project Structure
 
-- **Source:** Spotify API  
-- **Ingestion:** Python + Airflow tasks  
-- **Storage:** Amazon S3 (raw + transformed data)  
-- **Processing:** Python (Pandas) transformations  
-- **Orchestration:** Apache Airflow on Docker  
-- **Data Warehouse:** Snowflake (loaded via Snowpipe)
-
-**🔗 Note:** In the diagram, **Power BI** is not used — analytics can be done directly in Snowflake or with other BI tools if needed.
 
 ---
 
-## 🗂️ **Key Steps**
+## Pipeline Steps
 
-1️⃣ **Extract Data:**  
-Fetch playlist data from the Spotify API using Spotipy and store raw JSON in Amazon S3.
+ **1️) Fetch Spotify Playlist Data**  
+Uses the Spotify Web API and **Spotipy** to pull tracks from a playlist.
 
-2️⃣ **Transform Data:**  
-Read raw JSON files from S3, process albums, artists, and songs data into clean CSVs using Pandas.
+ **2️)Store Raw Data to S3**  
+Uploads raw JSON files to `raw_data/to_processed/`.
 
-3️⃣ **Store Transformed Data:**  
-Save transformed CSVs back to S3 in organized folders (`album_data`, `artist_data`, `songs_data`).
+ **3️) Read Raw Data from S3**  
+Reads JSON files from the raw folder.
 
-4️⃣ **Load into Snowflake:**  
-Use Snowpipe to automatically ingest the transformed data from S3 into Snowflake for analysis.
+ **4️)Process Albums, Artists, Songs**  
+Normalizes JSON to structured CSVs:
+- `album_id`, `name`, `total_tracks`, `url`
+- `artist_id`, `artist_name`, `external_url`
+- `song_id`, `song_name`, `duration_ms`, `url`, `popularity`, `song_added`, `album_id`, `artist_id`
 
-5️⃣ **Automation:**  
-All tasks are orchestrated with Apache Airflow running inside Docker **on your local machine**.
+ **5️)Store Processed CSVs to S3**  
+Uploads CSVs to:
+- `transformed_data/album_data/`
+- `transformed_data/artist_data/`
+- `transformed_data/songs_data/`
+
+ **6️) Move Processed Raw Files**  
+Moves raw JSON from `raw_data/to_processed/` to `raw_data/processed/`.
+
+ **7️)Load to Snowflake**  
+You can configure **Snowpipe** to auto-ingest the processed CSVs to your Snowflake tables.
 
 ---
 
-## 🐍 **Key Technologies**
+##  Technologies Used
 
-- **Python**, Spotipy, Pandas
 - **Apache Airflow**
-- **Docker**
+- **Spotipy**
 - **AWS S3**
-- **Snowflake**, Snowpipe
+- **Python**
+- **Pandas**
+- **Snowflake**
+- **Snowpipe**
 
 ---
-
-
-## 🚀 **How to Run**
-
-1️⃣ **Set up AWS S3 & Snowflake:**  
-- Create an S3 bucket (`spotify-etl-project-hanumant`) with `raw_data` and `transformed_data` folders.  
-- Configure Snowpipe to watch your S3 bucket.
-
-2️⃣ **Deploy Airflow with Docker:**  
-- Use `docker-compose.yml` to spin up Airflow **locally** with Docker.
-
-3️⃣ **Set Secrets:**  
-- Store Spotify API credentials in Airflow Variables (`spotify_client_id` & `spotify_client_secret`).  
-- Configure AWS connection (`aws_s3_airbnb`).
-
-4️⃣ **Run the DAG:**  
-- Trigger the `spotify_data_pipeline` DAG from the Airflow UI.
-
-5️⃣ **Check Outputs:**  
-- Raw JSON files in `raw_data/to_processed/`  
-- Clean CSVs in `transformed_data/`  
-- Loaded data in Snowflake tables.
-
----
-
-## 🔑 **Key Learnings**
-
-✅ Building ETL pipelines with **API extraction**  
-✅ Orchestrating workflows with **Apache Airflow**  
-✅ Managing data storage on **AWS S3**  
-✅ Automating loading into **Snowflake** using **Snowpipe**  
-✅ Running Airflow on **Docker**
-
----
-
 
 
